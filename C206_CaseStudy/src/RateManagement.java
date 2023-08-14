@@ -55,12 +55,13 @@ public class RateManagement {
         return exchangerate;
     }
 
-	private static void addExchangeRate(ArrayList<ExchangeRate> rateList, ExchangeRate exchangerate) {
+	public static boolean addExchangeRate(ArrayList<ExchangeRate> rateList, ExchangeRate exchangerate) {
         rateList.add(exchangerate);
         System.out.println("Exchange rate added successfully.");
+		return false;
     }
 
-    private static void viewAllExchangeRate(ArrayList<ExchangeRate> rateList) {
+    public static void viewAllExchangeRate(ArrayList<ExchangeRate> rateList) {
         if (rateList.isEmpty()) {
             System.out.println("No exchange rates available.");
         } else {
@@ -71,7 +72,7 @@ public class RateManagement {
         }
     }
 
-    private static void deleteExchangeRate(ArrayList<ExchangeRate> rateList) {
+    public static void deleteExchangeRate(ArrayList<ExchangeRate> rateList) {
         if (rateList.isEmpty()) {
             System.out.println("No exchange rates available to delete.");
         } else {
@@ -91,4 +92,9 @@ public class RateManagement {
             }
         }
     }
+
+	public static boolean deleteExchangeRate(ArrayList<ExchangeRate> rateList, ExchangeRate rate1) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }
