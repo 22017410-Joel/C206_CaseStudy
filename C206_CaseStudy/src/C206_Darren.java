@@ -1,9 +1,7 @@
+import java.util.ArrayList;
 
-
-import java.util.ArrayList; 
- 
 public class C206_Darren {
-	
+
 	public static void main(String[] args) {
 		ArrayList<Currency> currencyList = new ArrayList<Currency>();
 		currencyList.add(new Currency("SGD", "SG Dollar", 1.0));
@@ -19,7 +17,12 @@ public class C206_Darren {
 				System.out.println(viewAllcurrencies);
 			} else if (option == 3) {
 				String codeDelete = Helper.readString("Enter currency code to delete: ");
-				deleteCurrency(currencyList, codeDelete);
+				Boolean currencyDeleted = deleteCurrency(currencyList, codeDelete);
+				if (currencyDeleted == false) {
+					System.out.println("Delete currency failed.");
+				} else {
+					System.out.println("Currency Deleted.");
+				}
 			}
 			currencyMenu();
 			option = Helper.readInt("Enter the option: ");
@@ -81,7 +84,7 @@ public class C206_Darren {
         return viewAllcurrencies;
 	}
 	
-	public static void deleteCurrency(ArrayList<Currency> currencyList, String code) {
+	public static Boolean deleteCurrency(ArrayList<Currency> currencyList, String code) {
 		boolean deleteCurrency = false;
 		for (int i = 0; i< currencyList.size(); i++) {
 			// refactor local variable
@@ -93,10 +96,6 @@ public class C206_Darren {
 			}
 		}
 		
-		if (deleteCurrency == false) {
-			System.out.println("Delete currency failed.");
-		} else {
-			System.out.println("Currency Deleted.");
-		}
+		return deleteCurrency;
 	}
 }

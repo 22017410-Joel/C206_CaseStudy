@@ -1,107 +1,89 @@
-import static org.junit.Assert.*;
 
+
+import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 
-import org.junit.After;
 import org.junit.Before;
+import org.junit.After;
 import org.junit.Test;
-import org.junit.function.ThrowingRunnable;
+
+import java.io.IOException;
 
 public class C206_CaseStudyTest {
 
-    private ExchangeRate rate1;
-    private ArrayList<ExchangeRate> rateList;
-
-
+	private Currency c1;
+	private Currency c2;
+	
+	private ArrayList<Currency> currencyList;
 
     @Before
-    public void setUp() throws Exception {
-
-        // Prepare test data
-        rateList = new ArrayList<ExchangeRate>();
-        rate1 = new ExchangeRate("USD", "SGD", 1.35);
-        rateList.add(rate1);
-       
-
+    public void setup() throws Exception {
+        c1 = new Currency("USD", "US Dollar", 1.0);
+        c2 = new Currency("EUR", "Euro", 0.85);
+        
+        currencyList = new ArrayList<Currency>();
     }
 
     @Test
-
-    public void testAddExchangeRate() {
-        // Test Adding a New Exchange Rate
-        ExchangeRate newRate = new ExchangeRate("EUR", "SGD", 1.50);
-        assertFalse(rateList.contains(newRate));
-
+    public void testAddCurrency() {
+    	assertNotNull(currencyList);
+    	
+        C206_Darren.addCurrency(c1, currencyList);
         
-        rateList.add(newRate);
-        assertTrue(rateList.contains(newRate));
-
-        // Test adding a rate that already exists in the list
-        boolean addedAgain =RateManagement.addExchangeRate(rateList, rate1);
-        assertFalse(addedAgain);
-
-        // Test adding a minimum and maximum exchange rate in the list
-        ExchangeRate minRate = new ExchangeRate("JPY", "SGD", 0.01);
-        ExchangeRate maxRate = new ExchangeRate("GBP", "SGD", 10.00);
-        rateList.add(minRate);
-        rateList.add(maxRate);
-
+        assertEquals("Check that the currency has been added into the list", 1, currencyList.size());
+        assertSame("Check the currency is the same as the one added in", currencyList.get(0), c1);
+        
+        C206_Darren.addCurrency(c2, currencyList);
+        assertEquals("Check that the currency has been added into the list", 2, currencyList.size());
+        
+        C206_Darren.addCurrency(c1, currencyList);
+        assertEquals("Check if add duplicated currencies it wont add it in", 2, currencyList.size());
+    }
+    
+    @Test
+    public void testDeleteCurrency() {
+    	Boolean currencyDelete = C206_Darren.deleteCurrency(currencyList, "USD");
+    	assertTrue("check that delete fails as theres no currency in the list to delete", currencyDelete != true);
+    	
+    	C206_Darren.addCurrency(c1, currencyList);
+        assertEquals("Check that the currency has been added into the list", 1, currencyList.size());
+        assertSame("Check the currency is the same as the one added in", currencyList.get(0), c1);
+        
+        C206_Darren.deleteCurrency(currencyList, "EUR");
+        assertEquals("test that the currency will not be deleted if input is wrong", 1, currencyList.size());
+        
+        C206_Darren.deleteCurrency(currencyList, "USD");
+        assertEquals("Check if the currency has been deleted", 0, currencyList.size());
     }
 
     @Test
-    public void testViewAllExchangeRate() {
-        // Test that historical data for exchange rates are shown
-        String expectedOutput = rate1.toString() + "\n";
-
-        // Test records list is empty but not null
-        assertNotNull("Test if account list is not null", rateList);
-
-        // Test an exception during retrieval (Assuming an ExchangeRateException)
-        assertThrows(ExchangeRate.class, () -> {
-        RateManagement.viewAllExchangeRate(null);
-        });
-    }
-
-  
-	private void assertThrows(Class<ExchangeRate> class1, ThrowingRunnable throwingRunnable) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Test
-    public void testDeleteExchangeRate() {
-        // Test adding 2 exchange rates and delete first exchange rate
-		ExchangeRate rate2= new ExchangeRate("EUR","SGD",1.50);
-		rateList.add(rate2);
-        assertTrue(rateList.contains(rate1));
-        assertTrue(rateList.contains(rate2));
+    public void testViewAllCurrencies() {
+    	String output = "All Currencies: \n";
+    	String sentence = C206_Darren.viewAllCurrency(currencyList);
+    	assertEquals("Check that the currency list is empty as no currency has been added in", 0, currencyList.size());
+    	
+    	C206_Darren.addCurrency(c1, currencyList);
+        assertEquals("Check that the currency has been added into the list", 1, currencyList.size());
+        sentence = C206_Darren.viewAllCurrency(currencyList);
+        output += String.format("%-27s\n", c1.toString());        
+        assertEquals("Check if the output is the same as the method", output, sentence);
         
-        // Delete rate1
-        boolean deleted = RateManagement.deleteExchangeRate(rateList, rate1);
-        rateList.remove(rate1);
-        assertFalse(rateList.contains(rate1));
-        assertTrue(rateList.contains(rate2));
-        
-        // Test deleting a non-existent exchange rate
-        ExchangeRate nonExistentRate = new ExchangeRate("JPY", "SGD", 0.012);
-
-        assertFalse(rateList.contains(nonExistentRate));
-
-        // Try to delete the non-existent rate
-        boolean deletionResult =RateManagement.deleteExchangeRate(rateList, nonExistentRate);
-        assertFalse(deletionResult);
+        C206_Darren.addCurrency(c2, currencyList);
+        sentence = C206_Darren.viewAllCurrency(currencyList);
+        output += String.format("%-27s\n", c2.toString());
+        assertEquals("Check if the output is the same if we add a new currency", output, sentence);
     }
-
+    
     @After
-    public void tearDown() throws Exception {
-        rate1 = null;
-        rateList = null;
-
+    public void tearDown() throws Exception{
+    	c1 = null;
+    	c2 = null;
+    	
+    	currencyList = null;
     }
-    @Test
-    public void c206_test() {     
-    	assertTrue("C206_CaseStudy_SampleTest", true);
-    }
-    }
-
-
+}
