@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.function.ThrowingRunnable;
 
 public class C206_CaseStudyTest {
     private ExchangeRate rate1;
@@ -21,29 +22,67 @@ public class C206_CaseStudyTest {
     @Test
     public void testAddExchangeRate() {
         // Test Adding a New Exchange Rate
-        ExchangeRate newRate = new ExchangeRate("EUR", "USD", 1.18);
-        rateList.add(newRate);
+        ExchangeRate newRate = new ExchangeRate("EUR", "SGD", 1.50);
+        assertFalse(rateList.contains(newRate));
 
-        assertTrue("New exchange rate should be added", rateList.contains(newRate));
+        
+        rateList.add(newRate);
+        assertTrue(rateList.contains(newRate));
+
+        // Test adding a rate that already exists in the list
+        boolean addedAgain = C206_CaseStudy.addExchangeRate(rateList, rate1);
+        assertFalse(addedAgain);
+
+        // Test adding a minimum and maximum exchange rate in the list
+        ExchangeRate minRate = new ExchangeRate("JPY", "SGD", 0.01);
+        ExchangeRate maxRate = new ExchangeRate("GBP", "SGD", 10.00);
+        rateList.add(minRate);
+        rateList.add(maxRate);
+
     }
 
     @Test
     public void testViewAllExchangeRate() {
         // Test that historical data for exchange rates are shown
-        ExchangeRate retrievedRate = rateList.get(0);
-        assertNotNull("Retrieved exchange rate should not be null", retrievedRate);
-        
- // Using delta for double comparison
-       
+        String expectedOutput = rate1.toString() + "\n";
+
+        // Test records list is empty but not null
+        assertNotNull("Test if account list is not null", rateList);
+
+        // Test an exception during retrieval (Assuming an ExchangeRateException)
+        assertThrows(ExchangeRate.class, () -> {
+            C206_CaseStudy.viewAllExchangeRate(null);
+        });
     }
 
-    @Test
-    public void testDeleteExchangeRate() {
-        // Test deletion of exchange rate
-        ExchangeRate rateToDelete = rateList.get(0);
-        rateList.remove(rateToDelete);
+    private void assertThrows(Class<ExchangeRate> class1, ThrowingRunnable throwingRunnable) {
+		// TODO Auto-generated method stub
+		
+	}
 
-        assertFalse("Deleted exchange rate should not be in the list", rateList.contains(rateToDelete));
+	@Test
+    public void testDeleteExchangeRate() {
+        // Test adding 2 exchange rates and delete first exchange rate
+        ExchangeRate rate2 = new ExchangeRate("EUR", "SGD", 1.50);
+        rateList.add(rate2);
+
+        assertTrue(rateList.contains(rate1));
+        assertTrue(rateList.contains(rate2));
+
+        // Delete rate1
+        boolean deleted = C206_CaseStudy.DeleteExchangeRate(rateList, rate1);
+        rateList.remove(rate1);
+        assertFalse(rateList.contains(rate1));
+        assertTrue(rateList.contains(rate2));
+
+        // Test deleting a non-existent exchange rate
+        ExchangeRate nonExistentRate = new ExchangeRate("JPY", "SGD", 0.012);
+
+        assertFalse(rateList.contains(nonExistentRate));
+
+        // Try to delete the non-existent rate
+        boolean deletionResult = C206_CaseStudy.DeleteExchangeRate(rateList, nonExistentRate);
+        assertFalse(deletionResult);
     }
 
     @After

@@ -12,4 +12,19 @@ public class C206_CaseStudy {
 		
 	}
 
+	public static boolean addExchangeRate(ArrayList<ExchangeRate> rateList, ExchangeRate newRate) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public static String viewAllExchangeRate(ArrayList<ExchangeRate> rateList) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public static boolean DeleteExchangeRate(ArrayList<ExchangeRate> rateList, ExchangeRate rate1) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }
