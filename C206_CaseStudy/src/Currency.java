@@ -1,33 +1,42 @@
 
-public class Currency {
-	private String currencyCode;
-    private String currencyName;
-	public Currency(String currency, String name) {
-		// TODO Auto-generated constructor stub
-	}
-	/**
-	 * @return the currencyName
-	 */
-	public String getCurrencyName() {
-		return currencyName;
-	}
-	/**
-	 * @param currencyName the currencyName to set
-	 */
-	public void setCurrencyName(String currencyName) {
-		this.currencyName = currencyName;
-	}
-	/**
-	 * @return the currencyCode
-	 */
-	public String getCurrencyCode() {
-		return currencyCode;
-	}
-	/**
-	 * @param currencyCode the currencyCode to set
-	 */
-	public void setCurrencyCode(String currencyCode) {
-		this.currencyCode = currencyCode;
-	}
 
+public class Currency { 
+    private String currencyCode; 
+    private String currencyName; 
+    private double exchangeRate; 
+    
+    public Currency(String currencyCode, String currencyName, double exchangeRate) { 
+        this.currencyCode = currencyCode; 
+        this.currencyName = currencyName; 
+        this.exchangeRate = exchangeRate; 
+    } 
+    
+    public Currency(String currencyCode, String currencyName) {
+    	this.currencyCode = currencyCode;
+    	this.currencyName = currencyName;
+    }
+ 
+    public String getCurrencyCode() { 
+        return currencyCode; 
+    } 
+ 
+    public String getCurrencyName() { 
+        return currencyName; 
+    } 
+ 
+    public double getExchangeRate() { 
+        return exchangeRate; 
+    } 
+ 
+    public void setExchangeRate(double exchangeRate) { 
+        this.exchangeRate = exchangeRate; 
+    } 
+ 
+    @Override 
+    public String toString() { 
+    	String output = String.format("currencyCode= %-7s currencyName= %-10s exchangeRate= %-10.2f", currencyCode, currencyName, exchangeRate);
+        return  output;
+        		
+    }
+    
 }
